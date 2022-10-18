@@ -70,7 +70,7 @@ void main() {
       await Stripe.instance.dangerouslyUpdateCardDetails(cardDetails);
 
       final paymentMethod = await Stripe.instance.createPaymentMethod(
-        params: PaymentMethodParams.card(
+        PaymentMethodParams.card(
           paymentMethodData: PaymentMethodData(
             billingDetails: billingDetails,
           ),

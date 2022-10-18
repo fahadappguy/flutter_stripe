@@ -54,8 +54,8 @@ class KlarnaScreen extends StatelessWidget {
       );
 
       await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret: clientSecret,
-        data: PaymentMethodParams.klarna(
+        clientSecret,
+        PaymentMethodParams.klarna(
           paymentMethodData: PaymentMethodData(billingDetails: billingDetails),
         ),
       );

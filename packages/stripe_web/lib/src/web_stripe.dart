@@ -41,11 +41,13 @@ class WebStripe extends StripePlatform {
     bool? setReturnUrlSchemeOnAndroid,
   }) async {
     if (__stripe != null) return;
-    final stripeOption = s.StripeOptions();
-    if (stripeAccountId != null) {
-      stripeOption.stripeAccount = stripeAccountId;
-    }
-    __stripe = s.Stripe(publishableKey, stripeOption);
+    __stripe = s.Stripe(
+      publishableKey,
+      s.StripeOptions(
+        betas: s.jsify(['payment_element_beta_1']),
+        stripeAccount: stripeAccountId??'',
+      ),
+    );
     this.urlScheme = urlScheme;
   }
 
@@ -54,14 +56,14 @@ class WebStripe extends StripePlatform {
   @override
   Future<PaymentMethod> createPaymentMethod(
     PaymentMethodParams data, [
-    PaymentMethodOptions? options,
+    Map<String, String> options = const {},
   ]) async {
     final type = data.toJson()['paymentMethodType'];
     switch (type) {
       case 'Card':
-        return createCardPaymentMethod(data, {});
+        return createCardPaymentMethod(data, options);
       case 'Alipay':
-        return createCardPaymentMethod(data, {});
+        return createCardPaymentMethod(data, options);
     }
 
     throw UnimplementedError();
@@ -87,11 +89,11 @@ class WebStripe extends StripePlatform {
   Future<PaymentIntent> confirmPayment(
     String paymentIntentClientSecret,
     PaymentMethodParams? params, [
-    PaymentMethodOptions? options,
+    Map<String, String> options = const {},
   ]) async {
     assert(params != null, 'params are not allowed to be null on the web');
     final response = await params!.maybeWhen<Future<s.PaymentIntentResponse>>(
-      card: (usage) {
+      card: (usage, options) {
         return js.confirmCardPayment(
           paymentIntentClientSecret,
           data: s.ConfirmCardPaymentData(
@@ -106,7 +108,7 @@ class WebStripe extends StripePlatform {
           ),
         );
       },
-      cardFromMethodId: (paymentMethodData) {
+      cardFromMethodId: (paymentMethodData, _) {
         // https://stripe.com/docs/js/payment_intents/confirm_card_payment#stripe_confirm_card_payment-existing
         return js.confirmCardPayment(
           paymentIntentClientSecret,
@@ -115,7 +117,8 @@ class WebStripe extends StripePlatform {
           ),
         );
       },
-      cardFromToken: (PaymentMethodDataCardFromToken data) {
+      cardFromToken:
+          (PaymentMethodDataCardFromToken data, PaymentMethodOptions? options) {
         // https: //stripe.com/docs/js/payment_intents/confirm_card_payment#stripe_confirm_card_payment-token
         return js.confirmCardPayment(
           paymentIntentClientSecret,
@@ -170,11 +173,11 @@ class WebStripe extends StripePlatform {
   @override
   Future<SetupIntent> confirmSetupIntent(
     String setupIntentClientSecret,
-    PaymentMethodParams data,
-    PaymentMethodOptions? options,
-  ) async {
-    final response =
-        await data.maybeWhen<Future<s.SetupIntentResponse>>(card: (usage) {
+    PaymentMethodParams data, [
+    Map<String, String> options = const {},
+  ]) async {
+    final response = await data.maybeWhen<Future<s.SetupIntentResponse>>(
+        card: (usage, billing) {
       return js.confirmCardSetup(
         setupIntentClientSecret,
         data: s.ConfirmCardSetupData(

@@ -61,12 +61,12 @@ class MethodChannelStripe extends StripePlatform {
   @override
   Future<PaymentMethod> createPaymentMethod(
     PaymentMethodParams data, [
-    PaymentMethodOptions? options,
+    Map<String, String> options = const {},
   ]) async {
     final result = await _methodChannel
         .invokeMapMethod<String, dynamic>('createPaymentMethod', {
       'data': data.toJson(),
-      'options': options?.toJson() ?? {},
+      'options': options,
     });
 
     return ResultParser<PaymentMethod>(
@@ -84,14 +84,14 @@ class MethodChannelStripe extends StripePlatform {
   @override
   Future<PaymentIntent> confirmPayment(
     String paymentIntentClientSecret,
-    PaymentMethodParams? params,
-    PaymentMethodOptions? options,
-  ) async {
+    PaymentMethodParams? params, [
+    Map<String, String> options = const {},
+  ]) async {
     final result = await _methodChannel
         .invokeMapMethod<String, dynamic>('confirmPayment', {
       'paymentIntentClientSecret': paymentIntentClientSecret,
       'params': params?.toJson(),
-      'options': options?.toJson() ?? {},
+      'options': options,
     });
 
     return ResultParser<PaymentIntent>(
@@ -103,13 +103,13 @@ class MethodChannelStripe extends StripePlatform {
   Future<SetupIntent> confirmSetupIntent(
     String setupIntentClientSecret,
     PaymentMethodParams data, [
-    PaymentMethodOptions? options,
+    Map<String, String> options = const {},
   ]) async {
     final result = await _methodChannel
         .invokeMapMethod<String, dynamic>('confirmSetupIntent', {
       'setupIntentClientSecret': setupIntentClientSecret,
       'params': data.toJson(),
-      'options': options?.toJson() ?? {},
+      'options': options,
     });
 
     return ResultParser<SetupIntent>(

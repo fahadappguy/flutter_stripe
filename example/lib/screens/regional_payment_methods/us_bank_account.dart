@@ -85,15 +85,14 @@ class _UsBankAccountScreenState extends State<UsBankAccountScreen> {
 
       if (paymentIntentResult['error'] != null) {
         // Error during creating or confirming Intent
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${paymentIntentResult['error']}')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${paymentIntentResult['error']}')));
         return;
       }
 
       if (paymentIntentResult['clientSecret'] != null) {
         final intent = await Stripe.instance.confirmPayment(
-          paymentIntentClientSecret: paymentIntentResult['clientSecret'],
-          data: PaymentMethodParams.usBankAccount(
+          paymentIntentResult['clientSecret'],
+          PaymentMethodParams.usBankAccount(
               paymentMethodData: PaymentMethodDataUsBank(
             routingNumber: _routingNumberController.text,
             accountNumber: _accountController.text,
@@ -104,8 +103,7 @@ class _UsBankAccountScreenState extends State<UsBankAccountScreen> {
         handleNexAction(intent.nextAction, intent.clientSecret);
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       rethrow;
     }
   }
@@ -122,9 +120,8 @@ class _UsBankAccountScreenState extends State<UsBankAccountScreen> {
             });
       },
       orElse: () {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text('Error unknown followupaction rectrievied: $action')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error unknown followupaction rectrievied: $action')));
       },
     );
   }
@@ -158,12 +155,10 @@ class _VerifyMicroDepositsDialog extends StatefulWidget {
   final String clientSecret;
 
   @override
-  State<_VerifyMicroDepositsDialog> createState() =>
-      _VerifyMicroDepositsDialogState();
+  State<_VerifyMicroDepositsDialog> createState() => _VerifyMicroDepositsDialogState();
 }
 
-class _VerifyMicroDepositsDialogState
-    extends State<_VerifyMicroDepositsDialog> {
+class _VerifyMicroDepositsDialogState extends State<_VerifyMicroDepositsDialog> {
   late TextEditingController _descriptorController;
   late TextEditingController _amount1Controller;
   late TextEditingController _amount2Controller;
@@ -190,9 +185,7 @@ class _VerifyMicroDepositsDialogState
           isPaymentIntent: true,
           clientSecret: widget.clientSecret,
           params: VerifyMicroDepositsParams(
-            descriptorCode: _descriptorController.text.isNotEmpty
-                ? _descriptorController.text
-                : null,
+            descriptorCode: _descriptorController.text.isNotEmpty ? _descriptorController.text : null,
             amounts: _descriptorController.text.isEmpty &&
                     _amount1Controller.text.isNotEmpty &&
                     _amount2Controller.text.isNotEmpty
@@ -203,11 +196,9 @@ class _VerifyMicroDepositsDialogState
                 : null,
           ));
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Account verified successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Account verified successfully')));
     } on Exception catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       rethrow;
     }
   }

@@ -41,8 +41,8 @@ class IdealScreen extends StatelessWidget {
     // 2. use the client secret to confirm the payment and handle the result.
     try {
       await Stripe.instance.confirmPayment(
-        paymentIntentClientSecret:  clientSecret,
-       data: PaymentMethodParams.ideal(
+        clientSecret,
+        PaymentMethodParams.ideal(
           paymentMethodData: PaymentMethodDataIdeal(bankName: kIsWeb ? 'revolut' : null),
         ),
       );
