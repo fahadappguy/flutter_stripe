@@ -45,6 +45,7 @@ class WebStripe extends StripePlatform {
       publishableKey,
       s.StripeOptions(
         betas: s.jsify(['payment_element_beta_1']),
+        stripeAccount: stripeAccountId??'',
       ),
     );
     this.urlScheme = urlScheme;
