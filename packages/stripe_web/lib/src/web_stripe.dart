@@ -41,13 +41,22 @@ class WebStripe extends StripePlatform {
     bool? setReturnUrlSchemeOnAndroid,
   }) async {
     // if (__stripe != null) return;
-    __stripe = s.Stripe(
-      publishableKey,
-      s.StripeOptions(
-        betas: s.jsify(['payment_element_beta_1']),
-        stripeAccount: stripeAccountId??'',
-      ),
-    );
+    if((stripeAccountId??'') == ''){
+      __stripe = s.Stripe(
+        publishableKey,
+        s.StripeOptions(
+          betas: s.jsify(['payment_element_beta_1']),
+        ),
+      );
+    }else{
+      __stripe = s.Stripe(
+        publishableKey,
+        s.StripeOptions(
+          betas: s.jsify(['payment_element_beta_1']),
+          stripeAccount: stripeAccountId??'',
+        ),
+      );
+    }
     this.urlScheme = urlScheme;
   }
 
