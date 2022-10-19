@@ -85,6 +85,16 @@ class _NoWebhookPaymentScreenState extends State<NoWebhookPaymentScreen> {
     }
 
     try {
+      PaymentIntent paymentIntent = await Stripe.instance.confirmPayment(
+        'pi_3LuFAERiaRAgBC6I09JvknU5_secret_NrryTXX7IbP73H9sEaL6q40ew',
+        const PaymentMethodParams.card(
+          paymentMethodData: PaymentMethodData(),
+          options: PaymentMethodOptions(),
+        ),
+        // { // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
+        //   "return_url": redirectionURL.replaceFirst("summary_screen", "review_pay"),
+        // },
+      );
       // 1. Gather customer billing information (ex. email)
       final billingDetails = BillingDetails(
         email: 'email@stripe.com',

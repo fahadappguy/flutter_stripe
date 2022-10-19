@@ -16,7 +16,6 @@ Future<CheckoutResponse> redirectToCheckout({
     context: context,
     sessionId: sessionId,
     publishableKey: publishableKey,
-    stripeAccountId: stripeAccountId,
     successUrl: successUrl,
     canceledUrl: canceledUrl,
   );
