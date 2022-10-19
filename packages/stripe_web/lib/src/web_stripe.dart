@@ -40,7 +40,7 @@ class WebStripe extends StripePlatform {
     String? urlScheme,
     bool? setReturnUrlSchemeOnAndroid,
   }) async {
-    if (__stripe != null) return;
+    // if (__stripe != null) return;
     __stripe = s.Stripe(
       publishableKey,
       s.StripeOptions(
