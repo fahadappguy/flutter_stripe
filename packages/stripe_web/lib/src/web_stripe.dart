@@ -196,7 +196,12 @@ class WebStripe extends StripePlatform {
       throw UnimplementedError();
     });
     if (Error.safeToString(response.error) != 'null') {
-      throw response.error;
+      throw {
+        'code': response.error.code,
+        'doc_url': response.error.doc_url,
+        'message': response.error.message,
+        "type": response.error.type,
+      };
     }
 
     return response.setupIntent.parse();
