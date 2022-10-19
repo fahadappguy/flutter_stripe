@@ -100,8 +100,7 @@ class Stripe {
   /// Reconfigures the Stripe platform by applying the current values for
   /// [publishableKey], [merchantIdentifier], [stripeAccountId],
   /// [threeDSecureParams], [urlScheme]
-  Future<void> applySettings() {
-    return _initialise(
+  Future<void> applySettings() => _initialise(
         publishableKey: publishableKey,
         merchantIdentifier: merchantIdentifier,
         stripeAccountId: stripeAccountId,
@@ -109,7 +108,6 @@ class Stripe {
         urlScheme: urlScheme,
         setReturnUrlSchemeOnAndroid: setReturnUrlSchemeOnAndroid,
       );
-  }
 
   /// Exposes a [ValueListenable] whether or not Apple pay is supported for this
   /// device.

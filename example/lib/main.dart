@@ -7,9 +7,9 @@ import 'widgets/dismiss_focus_overlay.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = stripePublishableKey;
-  Stripe.stripeAccountId = 'acct_1Jf6HGRiaRAgBC6I';
-  // Stripe.urlScheme = 'flutterstripe';
-  // await Stripe.instance.applySettings();
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   runApp(const App());
 }
 
