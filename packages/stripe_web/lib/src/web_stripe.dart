@@ -173,12 +173,10 @@ class WebStripe extends StripePlatform {
       },
     );
     if (Error.safeToString(response.error) != 'null') {
-      throw {
-        'code': response.error.code,
-        'doc_url': response.error.doc_url,
-        'message': response.error.message,
-        "type": response.error.type,
-      };
+      throw StripeError(
+        message: response.error.message,
+        code: response.error.code,
+      );
     }
 
     return response.paymentIntent.parse();
